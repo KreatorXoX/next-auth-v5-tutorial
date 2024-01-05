@@ -10,9 +10,7 @@ type Props = { label: string };
 const Header = ({ label }: Props) => {
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center my-4">
-      <h1 className={cn("text-2xl font-bold", font.className)}>
-        Authentication
-      </h1>
+      <h1 className={cn("text-2xl font-bold", font.className)}>Company Name</h1>
       <p className="text-muted-foreground text-sm">{label}</p>
     </div>
   );

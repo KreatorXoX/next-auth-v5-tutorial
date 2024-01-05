@@ -3,8 +3,7 @@ import React, { useState, useTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { login } from "@/actions/login";
-import { LoginSchema, loginSchema } from "@/schemas";
+import { RegisterSchema, registerSchema } from "@/schemas";
 
 import {
   Form,
@@ -18,29 +17,31 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormApiResponse from "@/components/form-api-response";
 import CardWrapper from "@/components/auth/card-wrapper";
+import { register } from "@/actions/register";
 
 type Props = {};
 
-const LoginForm = (props: Props) => {
+const Registerform = (props: Props) => {
   const [response, setResponse] = useState<{
     status: "success" | "error" | undefined;
     message: string | undefined;
   }>({ status: undefined, message: undefined });
 
   const [isPending, startTransition] = useTransition();
-
-  const loginForm = useForm<LoginSchema>({
+  const registerform = useForm<RegisterSchema>({
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
 
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(registerSchema),
   });
 
-  const onSubmitHandler: SubmitHandler<LoginSchema> = (values) => {
+  const onSubmitHandler: SubmitHandler<RegisterSchema> = (values) => {
     startTransition(() => {
-      login(values).then((response) => {
+      register(values).then((response) => {
         return setResponse(response);
       });
     });
@@ -48,18 +49,36 @@ const LoginForm = (props: Props) => {
 
   return (
     <CardWrapper
-      header="Welcome back"
-      backButton={{ title: "Dont have an account ?", href: "/auth/register" }}
+      header="Create new account"
+      backButton={{ title: "Already have an account ?", href: "/auth/login" }}
       showSocial
     >
-      <Form {...loginForm}>
+      <Form {...registerform}>
         <form
-          onSubmit={loginForm.handleSubmit(onSubmitHandler)}
+          onSubmit={registerform.handleSubmit(onSubmitHandler)}
           className="space-y-5"
         >
           <div className="space-y-4">
             <FormField
-              control={loginForm.control}
+              control={registerform.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="John Doe"
+                      type="text"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={registerform.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
@@ -77,11 +96,29 @@ const LoginForm = (props: Props) => {
               )}
             />
             <FormField
-              control={loginForm.control}
+              control={registerform.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="********"
+                      type="password"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={registerform.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -105,7 +142,7 @@ const LoginForm = (props: Props) => {
             className="w-full"
             size={"sm"}
           >
-            Login
+            Register
           </Button>
         </form>
       </Form>
@@ -113,4 +150,4 @@ const LoginForm = (props: Props) => {
   );
 };
 
-export default LoginForm;
+export default Registerform;
