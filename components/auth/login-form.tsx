@@ -22,10 +22,13 @@ import CardWrapper from "@/components/auth/card-wrapper";
 type Props = {};
 
 const LoginForm = (props: Props) => {
-  const [response, setResponse] = useState<{
-    status: "success" | "error" | undefined;
-    message: string | undefined;
-  }>({ status: undefined, message: undefined });
+  const [response, setResponse] = useState<
+    | {
+        status: "success" | "error" | undefined;
+        message: string | undefined;
+      }
+    | undefined
+  >({ status: undefined, message: undefined });
 
   const [isPending, startTransition] = useTransition();
 
@@ -96,8 +99,8 @@ const LoginForm = (props: Props) => {
             />
           </div>
           <FormApiResponse
-            status={response.status}
-            message={response.message}
+            status={response?.status}
+            message={response?.message}
           />
           <Button
             disabled={isPending}

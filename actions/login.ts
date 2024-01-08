@@ -7,7 +7,7 @@ import { AuthError } from "next-auth";
 
 export const login = async (
   values: LoginSchema
-): Promise<{ status: "error" | "success"; message: string }> => {
+): Promise<{ status: "error" | "success"; message: string } | undefined> => {
   const validatedFields = loginSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -24,6 +24,7 @@ export const login = async (
       password,
       redirectTo: DEFAULT_REDIRECT,
     });
+    return undefined;
   } catch (error) {
     if (error instanceof AuthError) {
       if (error.type === "CredentialsSignin") {
@@ -40,9 +41,4 @@ export const login = async (
 
     throw error;
   }
-
-  return {
-    status: "success",
-    message: "Verification email is sent",
-  };
 };
