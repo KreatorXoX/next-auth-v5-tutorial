@@ -1,6 +1,9 @@
 "use server";
 
+import { signIn } from "@/auth";
+import { DEFAULT_REDIRECT } from "@/routes";
 import { LoginSchema, loginSchema } from "@/schemas";
+import { AuthError } from "next-auth";
 
 export const login = async (
   values: LoginSchema
@@ -12,6 +15,30 @@ export const login = async (
       status: "error",
       message: "Login fields are invalid",
     };
+  }
+
+  const { email, password } = validatedFields.data;
+  try {
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: DEFAULT_REDIRECT,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      if (error.type === "CredentialsSignin") {
+        return {
+          status: "error",
+          message: "Invalid email or password",
+        };
+      }
+      return {
+        status: "error",
+        message: "Something went wrong. Please try again later",
+      };
+    }
+
+    throw error;
   }
 
   return {
