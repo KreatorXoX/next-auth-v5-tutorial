@@ -5,6 +5,7 @@ type Props = {};
 
 const SettingsPage = async (props: Props) => {
   const session = await auth();
+
   return (
     <div>
       SettingsPage
