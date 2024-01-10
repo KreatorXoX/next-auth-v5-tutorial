@@ -1,4 +1,6 @@
 "use client";
+
+import { useSearchParams } from "next/navigation";
 import React, { useState, useTransition } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,12 +18,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import FormApiResponse from "@/components/form-api-response";
+import FormResponse from "@/components/form-response";
 import CardWrapper from "@/components/auth/card-wrapper";
 
 type Props = {};
 
 const LoginForm = (props: Props) => {
+  const searchParams = useSearchParams();
   const [response, setResponse] = useState<
     | {
         status: "success" | "error" | undefined;
@@ -48,7 +51,10 @@ const LoginForm = (props: Props) => {
       });
     });
   };
-
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email is already in use, please select the original provider to login"
+      : "";
   return (
     <CardWrapper
       header="Welcome back"
@@ -98,9 +104,9 @@ const LoginForm = (props: Props) => {
               )}
             />
           </div>
-          <FormApiResponse
-            status={response?.status}
-            message={response?.message}
+          <FormResponse
+            status={response?.status || urlError ? "error" : undefined}
+            message={response?.message || urlError || undefined}
           />
           <Button
             disabled={isPending}

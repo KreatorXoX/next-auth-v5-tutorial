@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { RegisterSchema, registerSchema } from "@/schemas";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/lib/user";
+import { generateVerificationToken } from "@/lib/generate-tokens";
 
 export const register = async (
   values: RegisterSchema
@@ -35,6 +36,9 @@ export const register = async (
       name,
     },
   });
+
+  await generateVerificationToken(email);
+  // TODO send token to email
 
   return {
     status: "success",

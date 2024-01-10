@@ -4,13 +4,13 @@ import React from "react";
 
 type Props = { message?: string; status?: "success" | "error" };
 
-const FormApiResponse = ({ message, status }: Props) => {
+const FormResponse = ({ message, status }: Props) => {
   if (!message) return null;
 
   return (
     <div
       className={cn(
-        "flex items-center py-2 px-3 gap-3 font-semibold rounded-lg",
+        "flex items-center py-2 px-3 gap-3 font-semibold rounded-lg text-sm",
         status === "success"
           ? "bg-green-500/20 text-green-800 "
           : "bg-rose-500/20 text-rose-800 "
@@ -22,4 +22,4 @@ const FormApiResponse = ({ message, status }: Props) => {
   );
 };
 
-export default FormApiResponse;
+export default FormResponse;

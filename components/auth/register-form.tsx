@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import FormApiResponse from "@/components/form-api-response";
+import FormResponse from "@/components/form-response";
 import CardWrapper from "@/components/auth/card-wrapper";
 import { register } from "@/actions/register";
 
@@ -132,10 +132,7 @@ const Registerform = (props: Props) => {
               )}
             />
           </div>
-          <FormApiResponse
-            status={response.status}
-            message={response.message}
-          />
+          <FormResponse status={response.status} message={response.message} />
           <Button
             disabled={isPending}
             type="submit"

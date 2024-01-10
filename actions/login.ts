@@ -1,6 +1,8 @@
 "use server";
 
 import { signIn } from "@/auth";
+import { generateVerificationToken } from "@/lib/generate-tokens";
+import { getUserByEmail } from "@/lib/user";
 import { DEFAULT_REDIRECT } from "@/routes";
 import { LoginSchema, loginSchema } from "@/schemas";
 import { AuthError } from "next-auth";
@@ -18,6 +20,16 @@ export const login = async (
   }
 
   const { email, password } = validatedFields.data;
+
+  const user = await getUserByEmail(email);
+  // if user email not verified or logged in using oauth deny login
+  if ((user && !user.emailVerified) || !user?.password) {
+    const verificationToken = await generateVerificationToken(email);
+    return {
+      status: "error",
+      message: "Email not verified / Invalid credentials",
+    };
+  }
   try {
     await signIn("credentials", {
       email,
