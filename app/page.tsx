@@ -19,11 +19,8 @@ export default function Home() {
       <div className="space-y-10 text-center">
         <div className="text-5xl font-bold drop-shadow-lg text-white flex items-center gap-4 bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 text-transparent bg-clip-text">
           <LockKeyhole size={40} className="text-rose-500" />
-          <h1>Auth Tutorial</h1>
+          <h1>FBA OPTIMIZATION</h1>
         </div>
-        <p className="text-xl text-white">
-          Fully functional NextAuth v5 authentication{" "}
-        </p>
         <LoginButtonWrapper>
           <Button size={"lg"} variant={"outline"} className="text-xl">
             Sign in

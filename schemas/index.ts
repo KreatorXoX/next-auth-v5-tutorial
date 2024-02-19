@@ -24,3 +24,11 @@ export const registerSchema = z
   });
 
 export type RegisterSchema = z.infer<typeof registerSchema>;
+
+export const countrySelectSchema = z.object({
+  country1: z.string().min(1, { message: "Country is required" }),
+  country2: z.string().min(1, { message: "Country is required" }),
+  products: z.string().min(1, { message: "Product is required" }),
+});
+
+export type CountrySelectSchema = z.infer<typeof countrySelectSchema>;
