@@ -1,4 +1,9 @@
-export const publicRoutes = ["/", "/packages/new", "/packages/active"];
+export const publicRoutes = [
+  "/",
+  "/packages/new",
+  "/packages/active",
+  "/api/products",
+];
 
 export const authRoutes = ["/auth/login", "/auth/register", "/auth/error"];
 

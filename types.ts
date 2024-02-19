@@ -16,13 +16,13 @@ type ImageUrls = string[];
 
 type ProductAttributes = {
   asin: string;
-  title: string;
+  description: string;
   image_urls: ImageUrls;
   brand: string;
   category: Category[];
   bsr: BSR[];
   date_first_available: string;
-  description: string;
+  title: string;
   key_points: string[];
   manufacturer: string;
   url: string;
@@ -82,11 +82,57 @@ type Ratings = {
   number_of_ratings: number;
 };
 
-type Product = {
+type ApiProduct = {
   product_attributes: ProductAttributes;
   price_details: PriceDetails;
   fee_details: FeeDetails;
   product_potential: ProductPotential;
   product_specifications: ProductSpecifications;
   ratings: Ratings;
+};
+
+type TableProduct = {
+  asin?: string;
+  amount?: number;
+  img?: string;
+  title?: string;
+  dimensions?: {
+    height?: number;
+    length?: number;
+    weight?: number;
+    width?: number;
+    length_unit?: string;
+    weight_unit?: string;
+  };
+  seller_count?: {
+    c1?: number;
+    c2?: number;
+  };
+  fba_fee?: {
+    c1?: number;
+    c2?: number;
+  };
+  prices?: {
+    c1?: {
+      price: number;
+      currency: string;
+      country: string;
+    };
+    c2?: {
+      price: number;
+      currency: string;
+      country: string;
+    };
+  };
+
+  price_90avg?: {
+    c1?: {
+      price: number;
+      currency: string;
+    };
+    c2?: {
+      price: number;
+      currency: string;
+    };
+  };
 };

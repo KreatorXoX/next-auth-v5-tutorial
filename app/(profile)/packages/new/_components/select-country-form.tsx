@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -23,17 +23,12 @@ import {
 import { CountrySelectSchema, countrySelectSchema } from "@/schemas";
 import { MoveRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
-type Props = {
-  setCountry1: (country: string) => void;
-  setCountry2: (country: string) => void;
-  setProducts: (products: string) => void;
-};
+import { useProductStore } from "@/hooks/use-product-store";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/lib/get-products";
+type Props = {};
 
-const SelectCountryForm = ({
-  setCountry1,
-  setCountry2,
-  setProducts,
-}: Props) => {
+const SelectCountryForm = ({}: Props) => {
   const form = useForm<CountrySelectSchema>({
     resolver: zodResolver(countrySelectSchema),
     defaultValues: {
@@ -43,10 +38,18 @@ const SelectCountryForm = ({
     },
   });
 
-  const onSubmitHandler: SubmitHandler<CountrySelectSchema> = (values) => {
-    setCountry1(values.country1);
-    setCountry2(values.country2);
-    setProducts(values.products);
+  const { addProduct, products: prods } = useProductStore();
+
+  const onSubmitHandler: SubmitHandler<CountrySelectSchema> = async (
+    values
+  ) => {
+    const res = await fetch("/api/products", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+
+    const data = await res.json();
+    addProduct(data);
   };
   return (
     <Form {...form}>

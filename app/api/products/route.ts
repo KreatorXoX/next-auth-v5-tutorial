@@ -1,5 +1,8 @@
-"use server";
-export const getProducts = async (c1: string, c2: string, asins: string) => {
+export async function POST(request: Request) {
+  const res = await request.json();
+  const c1 = res.country1;
+  const c2 = res.country2;
+  const asins = res.products;
   try {
     var myHeaders = new Headers();
     myHeaders.append("client-id", process.env.API_CLIENT_ID as string);
@@ -23,7 +26,7 @@ export const getProducts = async (c1: string, c2: string, asins: string) => {
     const result1 = await response1.json();
     const result2 = await response2.json();
     console.log(result1, result2);
-    console.log("calling");
+
     const formatedResult: TableProduct = {
       asin: result1[0].product_attributes.asin,
       img: result1[0].product_attributes.image_urls[0],
@@ -70,8 +73,8 @@ export const getProducts = async (c1: string, c2: string, asins: string) => {
       },
     };
 
-    return formatedResult;
+    return Response.json(formatedResult);
   } catch (error) {
     console.log(error);
   }
-};
+}
